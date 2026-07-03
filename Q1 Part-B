@@ -1,1 +1,36 @@
 
+import string
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+comments = [
+    "The New Roads Policy is AMAZING!!!",
+    "i dont think the new tax rule helps anyone.",
+    "The committee met on Tuesday to review the budget.",
+    "Honestly, this healthcare reform is a disaster.",
+    "Farmers finally got the support they deserve, great move!!"
+]
+
+analyzer = SentimentIntensityAnalyzer()
+
+
+def preprocess(text):
+    text = text.lower()
+
+    text = text.translate(str.maketrans("", "", string.punctuation))
+
+    words = text.split()
+
+    return words
+
+
+def get_compound_score(text):
+    sentiment = analyzer.polarity_scores(text)
+    return sentiment["compound"]
+
+
+print("\nCompound Scores:\n")
+
+for comment in comments:
+    score = get_compound_score(comment)
+    print(f"\"{comment}\" -> {score}")
+
